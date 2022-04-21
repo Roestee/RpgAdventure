@@ -6,13 +6,17 @@ namespace RpgAdventure
 {
     public class BanditBehaviour : MonoBehaviour
     {
+        #region Serializable Variables
         [SerializeField] private float timeToStopPursuit = 2.0f;
         [SerializeField] private float timeToWaitOnPursuit = 2.0f;
         [SerializeField] private float attackDistance = 3f;
+        [SerializeField] private float smoothRotation = 3f;
 
         [SerializeField] private Color m_Color = new Color(0, 0, 0.7f, 0.4f);
         [SerializeField] private PlayerScanner playerScanner;
+        #endregion
 
+        #region public Variables
         public bool hasFollowingTarget
         {
             get
@@ -20,7 +24,9 @@ namespace RpgAdventure
                 return FollowTarget != null;
             }
         }
+        #endregion
 
+        #region private Variables
         private PlayerController FollowTarget;
         private EnemyController enemyController;
         private Animator anim;
@@ -33,7 +39,9 @@ namespace RpgAdventure
         private readonly int hashAttack = Animator.StringToHash("Attack");
 
         private float timeSinceLostTarget = 0;
-        
+        #endregion
+
+        #region Unity
         private void Awake()
         {
             enemyController = GetComponent<EnemyController>();
@@ -45,20 +53,27 @@ namespace RpgAdventure
 
         private void Update()
         {
+            GuardPosition();
+        }
+        #endregion
+
+        #region Functions
+        private void GuardPosition()
+        {
             var detectedTarget = playerScanner.Detect(this.transform);
 
             bool hasDetectedTarget = detectedTarget != null;
 
             if (hasDetectedTarget) { FollowTarget = detectedTarget; }
 
-            if(hasFollowingTarget)
+            if (hasFollowingTarget)
             {
                 AttackOrFollowTarget();
 
-                if(hasDetectedTarget)
+                if (hasDetectedTarget)
                 {
                     timeSinceLostTarget = 0;
-                } 
+                }
                 else
                 {
                     StopPursuit();
@@ -74,14 +89,23 @@ namespace RpgAdventure
 
             if (toTarget.magnitude <= attackDistance)
             {
-                enemyController.StopFollowTarget();
-                anim.SetTrigger(hashAttack);
+                AttackTarget(toTarget);
             }
             else
             {
-                anim.SetBool(hashInPursuit, true);
-                enemyController.FollowTarget(FollowTarget.transform.position);
+                FollowTheTarget();
             }
+        }
+        private void AttackTarget(Vector3 toTarget)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toTarget), smoothRotation * Time.deltaTime);
+            enemyController.StopFollowTarget();
+            anim.SetTrigger(hashAttack);
+        }
+        private void FollowTheTarget()
+        {
+            anim.SetBool(hashInPursuit, true);
+            enemyController.FollowTarget(FollowTarget.transform.position);
         }
 
         private void StopPursuit() 
@@ -92,11 +116,11 @@ namespace RpgAdventure
             {
                 FollowTarget = null;
                 anim.SetBool(hashInPursuit, false);
-                StartCoroutine(WaitOnPursuit());
+                StartCoroutine(WaitBeforeReturn());
             }
         }
 
-        private IEnumerator WaitOnPursuit()
+        private IEnumerator WaitBeforeReturn()
         {
             yield return new WaitForSeconds(timeToWaitOnPursuit);
             enemyController.FollowTarget(originalPos);
@@ -117,6 +141,7 @@ namespace RpgAdventure
                 transform.rotation = targetRotation;
             }
         }
+        #endregion
 
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
@@ -124,6 +149,8 @@ namespace RpgAdventure
             UnityEditor.Handles.color = m_Color;
             Vector3 rotatedForward = Quaternion.Euler(0, -playerScanner.detectionAngle * 0.5f, 0) * transform.forward;
             UnityEditor.Handles.DrawSolidArc(transform.position, Vector3.up, rotatedForward, playerScanner.detectionAngle, playerScanner.detectionRadius);
+
+            UnityEditor.Handles.DrawSolidArc(transform.position, Vector3.up, rotatedForward, 360, playerScanner.meleeDetectionRadius);
         }
 #endif
     }
