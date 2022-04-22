@@ -98,6 +98,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  attackPoints:
+  - radius: 0.1
+    offset: {x: -0.22, y: 0.09, z: 0.83}
+    rootTransform: {fileID: 1313347424419925250}
+    color: {r: 0.3882353, g: 0.98039216, b: 0.3647059, a: 0.54901963}
+  - radius: 0.1
+    offset: {x: -0.19, y: 0.07, z: 0.65}
+    rootTransform: {fileID: 1313347424419925250}
+    color: {r: 0.38974857, g: 0.9811321, b: 0.36561054, a: 0.5529412}
+  - radius: 0.1
+    offset: {x: -0.15, y: 0.05, z: 0.47}
+    rootTransform: {fileID: 1313347424419925250}
+    color: {r: 0.38974857, g: 0.9811321, b: 0.36561054, a: 0.5529412}
 --- !u!114 &1510582330364573842
 MonoBehaviour:
   m_ObjectHideFlags: 0

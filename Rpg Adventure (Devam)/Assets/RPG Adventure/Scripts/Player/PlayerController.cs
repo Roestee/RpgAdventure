@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RpgAdventure
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IAttackAnimListener
     {
         public static PlayerController instance
         {
@@ -52,6 +52,7 @@ namespace RpgAdventure
             cameraController = Camera.main.GetComponent<CameraController>();
             characterController = GetComponent<CharacterController>();
             s_Instance = this;
+            meleeWeapon.SetOwner(gameObject);
         }
 
         private void FixedUpdate()
@@ -72,8 +73,17 @@ namespace RpgAdventure
             if (playerInput.isAttacking)
             {
                 anim.SetTrigger(hashMeleeAttack);
-                meleeWeapon.BeginAttack();
             }
+        }
+
+        public void MeleeAttackStart()
+        {
+            meleeWeapon.BeginAttack();
+        }
+
+        public void MeleeAttackEnd()
+        {
+            meleeWeapon.EndAttack();
         }
 
         private void OnAnimatorMove()

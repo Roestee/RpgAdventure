@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace RpgAdventure
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour, IAttackAnimListener
     {
         private NavMeshAgent navMeshAgent;
         private Animator anim;
@@ -38,6 +38,10 @@ namespace RpgAdventure
         {
             navMeshAgent.enabled = false;
         }
+
+        public void MeleeAttackStart(){}
+
+        public void MeleeAttackEnd(){}
     }
 }
 
