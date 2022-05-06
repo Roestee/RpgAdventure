@@ -6,6 +6,8 @@ namespace RpgAdventure
 {
     public class PlayerController : MonoBehaviour, IAttackAnimListener
     {
+        public InventoryObject inventory;
+
         public static PlayerController instance
         {
             get
@@ -74,6 +76,20 @@ namespace RpgAdventure
             {
                 anim.SetTrigger(hashMeleeAttack);
             }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            var item = other.GetComponent<Item>();
+            if (item)
+            {
+                inventory.AddItem(item.item, 1);
+                Destroy(other.gameObject);
+            }
+        }
+        private void OnApplicationQuit()
+        {
+            inventory.Container.Clear();
         }
 
         public void MeleeAttackStart()

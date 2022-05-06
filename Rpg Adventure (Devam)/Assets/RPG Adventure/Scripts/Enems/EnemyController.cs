@@ -7,6 +7,8 @@ namespace RpgAdventure
 {
     public class EnemyController : MonoBehaviour, IAttackAnimListener
     {
+        public Animator animator { get { return anim; } } 
+
         private NavMeshAgent navMeshAgent;
         private Animator anim;
 

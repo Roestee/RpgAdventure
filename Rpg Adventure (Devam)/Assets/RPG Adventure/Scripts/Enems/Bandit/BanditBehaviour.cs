@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace RpgAdventure
 {
-    public class BanditBehaviour : MonoBehaviour
+    public class BanditBehaviour : MonoBehaviour, IMessageReceiver
     {
         #region Serializable Variables
         [SerializeField] private float timeToStopPursuit = 2.0f;
@@ -29,7 +29,6 @@ namespace RpgAdventure
         #region private Variables
         private PlayerController FollowTarget;
         private EnemyController enemyController;
-        private Animator anim;
 
         private Vector3 originalPos;
         private Quaternion originalRot;
@@ -37,6 +36,8 @@ namespace RpgAdventure
         private readonly int hashInPursuit = Animator.StringToHash("InPursuit");
         private readonly int hashNearBase= Animator.StringToHash("NearBase");
         private readonly int hashAttack = Animator.StringToHash("Attack");
+        private readonly int hashHurt = Animator.StringToHash("Hurt");
+        private readonly int hashDead = Animator.StringToHash("Dead");
 
         private float timeSinceLostTarget = 0;
         #endregion
@@ -45,7 +46,6 @@ namespace RpgAdventure
         private void Awake()
         {
             enemyController = GetComponent<EnemyController>();
-            anim = GetComponent<Animator>();
 
             originalPos = transform.position;
             originalRot = transform.rotation;
@@ -82,6 +82,31 @@ namespace RpgAdventure
 
             CheckIfNearBase();
         }
+        public void OnReceiveMessage(MessageType type)
+        {
+            switch (type)
+            {
+                case MessageType.DAMAGED:
+                    OnReceiveDamage();
+                    break;
+                case MessageType.DEAD:
+                    OnDead();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void OnReceiveDamage()
+        {
+            enemyController.animator.SetTrigger(hashHurt);
+        }
+
+        private void OnDead()
+        {
+            enemyController.StopFollowTarget();
+            enemyController.animator.SetTrigger(hashDead);
+        }
 
         private void AttackOrFollowTarget()
         {
@@ -100,11 +125,11 @@ namespace RpgAdventure
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toTarget), smoothRotation * Time.deltaTime);
             enemyController.StopFollowTarget();
-            anim.SetTrigger(hashAttack);
+            enemyController.animator.SetTrigger(hashAttack);
         }
         private void FollowTheTarget()
         {
-            anim.SetBool(hashInPursuit, true);
+            enemyController.animator.SetBool(hashInPursuit, true);
             enemyController.FollowTarget(FollowTarget.transform.position);
         }
 
@@ -115,7 +140,7 @@ namespace RpgAdventure
             if (timeSinceLostTarget >= timeToStopPursuit)
             {
                 FollowTarget = null;
-                anim.SetBool(hashInPursuit, false);
+                enemyController.animator.SetBool(hashInPursuit, false);
                 StartCoroutine(WaitBeforeReturn());
             }
         }
@@ -133,7 +158,7 @@ namespace RpgAdventure
 
             bool nearBase = toBase.magnitude < 0.01f;
 
-            anim.SetBool(hashNearBase, nearBase);
+            enemyController.animator.SetBool(hashNearBase, nearBase);
 
             if (nearBase)
             {
