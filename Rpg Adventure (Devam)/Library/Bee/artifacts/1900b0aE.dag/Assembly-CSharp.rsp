@@ -358,6 +358,7 @@
 "Assets/RPG Adventure/ScriptableObjects/Items/Scripts/ItemObject.cs"
 "Assets/RPG Adventure/Scripts/Camera/CameraController.cs"
 "Assets/RPG Adventure/Scripts/Camera/FollowCamera.cs"
+"Assets/RPG Adventure/Scripts/Core/UniqueID.cs"
 "Assets/RPG Adventure/Scripts/DamageSystem/Damageable.cs"
 "Assets/RPG Adventure/Scripts/DamageSystem/Damageable.DamageMessage.cs"
 "Assets/RPG Adventure/Scripts/Enems/Bandit/BanditBehaviour.cs"
@@ -366,6 +367,7 @@
 "Assets/RPG Adventure/Scripts/Enems/ReplaceWithRagdoll.cs"
 "Assets/RPG Adventure/Scripts/Enems/ReplaceWithRagdollSMB.cs"
 "Assets/RPG Adventure/Scripts/Events/IAttackAnimListener.cs"
+"Assets/RPG Adventure/Scripts/Graphics/Clickable.cs"
 "Assets/RPG Adventure/Scripts/Graphics/Dissolve.cs"
 "Assets/RPG Adventure/Scripts/Helpers/FixedUpdateFollow.cs"
 "Assets/RPG Adventure/Scripts/Helpers/IMessageReceiver.cs"
@@ -373,6 +375,10 @@
 "Assets/RPG Adventure/Scripts/Items/Item.cs"
 "Assets/RPG Adventure/Scripts/Player/PlayerController.cs"
 "Assets/RPG Adventure/Scripts/Player/PlayerInput.cs"
+"Assets/RPG Adventure/Scripts/Quest/Quest.cs"
+"Assets/RPG Adventure/Scripts/Quest/QuestGiver.cs"
+"Assets/RPG Adventure/Scripts/Quest/QuestLog.cs"
+"Assets/RPG Adventure/Scripts/Quest/QuestManager.cs"
 "Assets/RPG Adventure/Scripts/Weapons/MeleeWeapon.cs"
 -langversion:9.0
 

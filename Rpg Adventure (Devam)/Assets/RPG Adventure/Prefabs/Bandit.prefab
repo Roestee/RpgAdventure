@@ -2863,6 +2863,7 @@ GameObject:
   - component: {fileID: 125828060798122937}
   - component: {fileID: 241377216}
   - component: {fileID: 5405637123550125854}
+  - component: {fileID: 3133284970418151577}
   m_Layer: 6
   m_Name: Bandit
   m_TagString: Untagged
@@ -3052,6 +3053,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdollPrefab: {fileID: 46732362933055041, guid: 4955dcf3e71ba7e44a641bc4297cf3fb, type: 3}
+--- !u!114 &3133284970418151577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3392170582916198480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee41f67092dcecc4598b5f92b7a16611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uid: 21f4a5a1-637b-4c83-805f-80e206283e5b
 --- !u!1 &3392172931890710816
 GameObject:
   m_ObjectHideFlags: 0
